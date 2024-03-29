@@ -1,0 +1,14 @@
+name: CI
+on: ["push"]
+jobs:
+    build:
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-dotnet@v3
+            - name: Install dependencies
+              run: dotnet restore
+            - name: Publish for win-x64
+              run: dotnet publish -r win-x64
+
+
