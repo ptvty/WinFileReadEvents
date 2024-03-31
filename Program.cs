@@ -15,6 +15,11 @@ namespace WinFileReadEvents
 
             string? filePath = (args.Length < 1) ? null : args[0];
 
+            if (filePath == "testRun") {
+                Console.WriteLine("x|testRun");
+                return;
+            }
+
             using var session = new TraceEventSession("FileRead");
 
             Console.CancelKeyPress += (sender, e) => session.Stop();

@@ -10,6 +10,8 @@ jobs:
               run: dotnet restore
             - name: Publish for win-x64
               run: dotnet publish -r win-x64
+            - name: Test run
+              run: ./bin/Release/net8.0/win-x64/publish/WinFileReadEvents.exe testRun
             - name: Get version
               id: package_version
               uses: KageKirin/get-csproj-version@v0
