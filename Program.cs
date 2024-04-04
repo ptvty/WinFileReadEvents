@@ -9,16 +9,20 @@ namespace WinFileReadEvents
         {
             if (TraceEventSession.IsElevated() != true)
             {
-                Console.WriteLine("x|To turn on ETW events you need to be Administrator, please run from an Admin process.");
+                Console.WriteLine("[ERROR] To turn on ETW events you need to be Administrator, please run from an Admin process.");
                 return;
             }
 
             string? filePath = (args.Length < 1) ? null : args[0];
 
             if (filePath == "testRun") {
-                Console.WriteLine("x|testRun");
+                Console.WriteLine("[BREAK] testRun, exiting");
                 return;
             }
+
+            Console.CancelKeyPress += delegate {
+                Console.WriteLine("[BREAK] Exiting");
+            };
 
             using var session = new TraceEventSession("FileRead");
 
@@ -32,7 +36,7 @@ namespace WinFileReadEvents
             {
                 if (filePath == null || string.Compare(data.FileName, filePath, StringComparison.OrdinalIgnoreCase) == 0)
                 {
-                    string line = ">|";
+                    string line = "[EVENT] ";
                     line += data.Offset + "|";
                     line += data.IoSize + "|";
                     line += data.FileName;
@@ -40,6 +44,7 @@ namespace WinFileReadEvents
                 }
             };
 
+            Console.WriteLine("[READY] Starting process");
             session.Source.Process();
         }
     }
